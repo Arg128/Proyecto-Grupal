@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Nueva Página</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Crear Nueva Página</h1>
+    <form action="/cgi-bin/nueva_pagina.pl" method="post">
+        <label for="nombre">Nombre de la Página:</label><br>
+        <!-- Eliminamos el atributo pattern -->
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="contenido">Contenido (Markdown):</label><br>
+        <textarea id="contenido" name="contenido" rows="15" cols="80" required></textarea><br><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="index.html">Volver al Inicio</a>
+</body>
+</html>
