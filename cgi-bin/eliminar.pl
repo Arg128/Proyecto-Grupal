@@ -14,7 +14,7 @@ if ($pagina && $pagina =~ /^[a-zA-Z0-9_.-]+\.md$/) {
     my $file_path = $data_dir . $pagina;
     if (-e $file_path) {
         unlink($file_path) or die "No se pudo eliminar la página: $!";
-        print redirect('listado.pl');
+     ##   print redirect('listado.pl');
     } else {
         print start_html('Error');
         print "<h1>Error: Página no encontrada.</h1>";
