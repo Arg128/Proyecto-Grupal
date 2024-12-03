@@ -10,11 +10,14 @@ my $data_dir = "/var/www/html/data/";
 my $nombre = param('nombre');
 my $contenido = param('contenido');
 
+# Eliminar espacios en blanco al inicio y al final del nombre
+$nombre =~ s/^\s+|\s+$//g if defined $nombre;
+
 if ($nombre && $contenido) {
     # Validar y sanitizar el nombre de la página
     if ($nombre =~ /^[a-zA-Z0-9_-]+$/) {
         my $file_path = $data_dir . $nombre . '.md';
-        
+
         # Verificar si el archivo ya existe
         if (-e $file_path) {
             print header(-type => 'text/html', -charset => 'UTF-8');
@@ -42,7 +45,7 @@ if ($nombre && $contenido) {
         # Nombre de página inválido
         print header(-type => 'text/html', -charset => 'UTF-8');
         print start_html('Error');
-        print "<h1>Error: Nombre de página inválido.</h1>";
+        print "<h1>Error: Nombre de página inválido. Sólo se permiten letras, números, guiones y guiones bajos.</h1>";
         print "<a href='/nueva_pagina.html'>Volver</a>";
         print end_html;
     }
