@@ -1,12 +1,45 @@
+/* Centrar todo el contenido en la pantalla */
 body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center; /* Centra todo el texto */
+    height: 100vh;
+    margin: 0;
     font-family: Arial, sans-serif;
-    margin: 20px;
 }
 
+/* Estilo para el título */
 h1 {
     color: #333;
+    margin-bottom: 10px;
+    text-align: center; /* Centra el texto del título */
 }
 
+/* Estilo para la imagen */
+img {
+    display: block;
+    margin: 0 auto;
+    max-width: 300px; /* Ancho máximo */
+    height: auto; /* Mantiene la proporción */
+    margin-bottom: 20px; /* Espacio debajo de la imagen */
+}
+
+/* Centrar texto de párrafos */
+p {
+    margin: 5px 0;
+    text-align: center; /* Centra el texto de los párrafos */
+}
+
+/* Estilo para las listas */
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center; /* Centra el texto de los elementos de la lista */
+}
+
+/* Estilo para los enlaces */
 a {
     text-decoration: none;
     color: #0066cc;
@@ -14,9 +47,4 @@ a {
 
 a:hover {
     text-decoration: underline;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
 }
