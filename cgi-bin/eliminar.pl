@@ -15,7 +15,7 @@ if ($pagina && $pagina =~ /^[a-zA-Z0-9_.-]+\.md$/) {
     my $file_path = $data_dir . $pagina;
     if (-e $file_path) {
         unlink($file_path) or die "No se pudo eliminar la página: $!";
-        $mensaje = "La página '$pagina' ha sido eliminada correctamente.";  # Mensaje de éxito       
+        $mensaje = "La página '$pagina' ha sido eliminada correctamente.";  # Mensaje de éxito
     } else {
         $mensaje = "Error: Página no encontrada.";  # Mensaje de error si no se encuentra el archivo
     }
