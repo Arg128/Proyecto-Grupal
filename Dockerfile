@@ -1,28 +1,26 @@
-FROM debian:11
+# Usar la imagen oficial de Lighttpd
+FROM lighttpd:latest
 
-RUN apt-get update
-RUN apt-get install -y vim && nginx && fcgiwrap && systemctl
+# Instalar Perl para CGI
+RUN apt-get update && \
+    apt-get install -y perl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /var/www/html/cgi-bin/
-RUN mkdir /var/www/html/css/
-#Insertamos la ruta al archivo de configuración fastcgi.conf
+# Crear un directorio para los scripts CGI
+RUN mkdir -p /var/www/cgi-bin
 
-RUN echo "location /cgi-bin/ {" >> /etc/nginx/fastcgi.conf 
-RUN echo   "gzip off;">> /etc/nginx/fastcgi.conf 
-RUN echo    "root  /var/www;">> /etc/nginx/fastcgi.conf 
-RUN echo    "fastcgi_pass  unix:/var/run/fcgiwrap.socket;">> /etc/nginx/fastcgi.conf 
-RUN echo    "include /etc/nginx/fastcgi_params;">> /etc/nginx/fastcgi.conf 
-RUN echo    "fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;"
-RUN echo "}" >> /etc/nginx/fastcgi.conf 
+# Copiar los scripts Perl al directorio cgi-bin
+COPY app /var/www/cgi-bin
 
+# Asegurarse de que los scripts Perl tengan permisos de ejecución
+RUN chmod +x /var/www/cgi-bin/*.pl
 
-RUN chmod +x /var/www/html/cgi-bin/
-RUN chmod +x /var/www/html/css/
-COPY html/* /var/www/html/
-COPY cgi-bin/* /var/www/html/cgi-bin/
-COPY html/css/* /var/www/html/css/
+# Copiar la configuración de Lighttpd al contenedor
+COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
 
-RUN chmod +x /var/www/html/cgi-bin/*
+# Exponer el puerto 80
+EXPOSE 80
 
-
-
+# Comando para iniciar Lighttpd
+CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
