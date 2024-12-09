@@ -1,26 +1,19 @@
-# Usar la imagen oficial de Lighttpd
-FROM lighttpd:latest
+FROM debian:latest
 
-# Instalar Perl
-RUN apt-get update && \
-    apt-get install -y perl && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Instalar Nginx, fcgiwrap y spawn-fcgi
+RUN apt-get update && apt-get install -y nginx fcgiwrap spawn-fcgi
 
-# Crear un directorio para los scripts CGI
-RUN mkdir -p /var/www/cgi-bin
+# Crear directorio para el socket si no existe
+RUN mkdir -p /var/run
 
-# Copiar los scripts Perl al directorio cgi-bin
-COPY app /var/www/cgi-bin
+# Copiar archivos de configuración de Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Asegurarse de que los scripts Perl tengan permisos de ejecución
-RUN chmod +x /var/www/cgi-bin/*.pl
-
-# Copiar la configuración de Lighttpd al contenedor
-COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
+# Copiar scripts CGI
+COPY cgi-bin /usr/lib/cgi-bin
 
 # Exponer el puerto 80
 EXPOSE 80
 
-# Comando para iniciar Lighttpd
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+# Comando para iniciar fcgiwrap y Nginx
+CMD spawn-fcgi -s /var/run/fcgiwrap.socket -M 766 /usr/sbin/fcgiwrap && nginx -g "daemon off;"
